@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+
+  database:
+    # A MySQL database populated with some sample data.
+    image: mysql:latest
+    container_name: database_container
+    env_file: .env
+    ports:
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
+    volumes:
+      - ./database/sample_db.sql:/docker-entrypoint-initdb.d/init.sql
+      - database_volume:/var/lib/mysql
+
+
+  backend:
+    # The application backend, served through a REST API
+    build:
+      context: ./backend
+      args:
+        - BACKEND_PORT
+    container_name: backend_container
+    depends_on:
+      - database
+    env_file: .env
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      # These environment variables override the default values given in .env file
+      - MYSQL_HOSTNAME=database_container
+
+  frontend:
+    # The application fronted, a simple web app' powered by Streamlit
+    build:
+      context: ./frontend
+      args:
+        - WEBAPP_PORT
+    container_name: frontend_container
+    env_file: .env
+    ports:
+      - "${WEBAPP_PORT}:${WEBAPP_PORT}"
+    environment:
+      # These environment variables override the default values given in .env file
+      - BACKEND_HOSTNAME=backend
+
+
+
+
+volumes:
+  # A volume to persist data from MySQL database
+  database_volume:

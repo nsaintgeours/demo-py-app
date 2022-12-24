@@ -1,0 +1,20 @@
+{
+  "user_id": 2,
+  "measurements": [
+    {
+      "measurement_id": 1,
+      "measurement_type": "TEMPERATURE",
+      "measurement_value": 43.9
+    },
+    {
+      "measurement_id": 4,
+      "measurement_type": "WEIGHT",
+      "measurement_value": 51
+    },
+    {
+      "measurement_id": 26,
+      "measurement_type": "TEMPERATURE",
+      "measurement_value": 34.8
+    }
+  ]
+}
